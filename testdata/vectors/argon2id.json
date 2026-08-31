@@ -1,0 +1,18 @@
+{
+  "algorithm": "argon2id",
+  "source": "reference CLI of P-H-C/phc-winner-argon2, mirrored in x/crypto argon2_test.go",
+  "note": "RFC 9106 vectors use secret and associated data, which x/crypto does not expose",
+  "password": "password",
+  "salt": "somesalt",
+  "key_len": 24,
+  "cases": [
+    { "name": "t1-m64-p1",    "time": 1, "memory_kib": 64,   "threads": 1, "key": "655ad15eac652dc59f7170a7332bf49b8469be1fdb9c28bb" },
+    { "name": "t2-m64-p1",    "time": 2, "memory_kib": 64,   "threads": 1, "key": "068d62b26455936aa6ebe60060b0a65870dbfa3ddf8d41f7" },
+    { "name": "t2-m64-p2",    "time": 2, "memory_kib": 64,   "threads": 2, "key": "350ac37222f436ccb5c0972f1ebd3bf6b958bf2071841362" },
+    { "name": "t2-m64-p3",    "time": 2, "memory_kib": 64,   "threads": 3, "key": "4a15b31aec7c2590b87d1f520be7d96f56658172deaa3079" },
+    { "name": "t3-m256-p2",   "time": 3, "memory_kib": 256,  "threads": 2, "key": "4668d30ac4187e6878eedeacf0fd83c5a0a30db2cc16ef0b" },
+    { "name": "t3-m1024-p6",  "time": 3, "memory_kib": 1024, "threads": 6, "key": "1640b932f4b60e272f5d2207b9a9c626ffa1bd88d2349016" },
+    { "name": "t4-m1024-p8",  "time": 4, "memory_kib": 1024, "threads": 8, "key": "8dafa8e004f8ea96bf7c0f93eecf67a6047476143d15577f" },
+    { "name": "t4-m4096-p4",  "time": 4, "memory_kib": 4096, "threads": 4, "key": "145db9733a9f4ee43edf33c509be96b934d505a4efb33c5a" }
+  ]
+}
