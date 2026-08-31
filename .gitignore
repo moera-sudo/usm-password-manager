@@ -1,0 +1,19 @@
+docs
+docs/*
+CLAUDE.md
+
+# * Build artifacts
+bin/
+dist/
+
+# ! Storage, backups
+*.usm
+*.usm.[0-9]
+
+# ! Secrets
+.env
+.env.*
+
+# * Make cover output
+coverage.out
+coverage.html
