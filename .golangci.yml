@@ -1,0 +1,54 @@
+version: "2"
+
+linters:
+  default: none
+  enable:
+    # * Bug finders
+    - govet
+    - staticcheck
+    - errcheck
+    - ineffassign
+    - nilerr
+    - errorlint
+    - bodyclose
+    - unused
+    - gosec
+    - depguard
+    - misspell
+    - revive
+
+  settings:
+    staticcheck:
+      checks: ["all", "-ST1000", "-ST1020", "-ST1021", "-ST1022"]
+
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+
+    depguard:
+      rules:
+        crypto-and-otp-stay-self-contained:
+          files:
+            - "**/internal/crypto/**"
+            - "**/internal/otp/**"
+          allow:
+            - $gostd
+            - golang.org/x/crypto
+            - github.com/moera-sudo/usm-password-manager/internal/crypto
+
+        tui-goes-through-vault:
+          files:
+            - "**/internal/tui/**"
+          deny:
+            - pkg: github.com/moera-sudo/usm-password-manager/internal/crypto
+              desc: tui must never reach crypto directly, go through vault
+            - pkg: github.com/moera-sudo/usm-password-manager/internal/store
+              desc: tui must never reach store directly, go through vault
+
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - gosec
+          - errcheck

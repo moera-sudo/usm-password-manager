@@ -100,6 +100,7 @@ func openLogFile(path string) (*os.File, error) {
 		return nil, fmt.Errorf("create log directory: %w", err)
 	}
 
+	// #nosec G304 -- the path is built from XDG variables, not from user input
 	file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, logFileMode)
 	if err != nil {
 		return nil, fmt.Errorf("open log file: %w", err)

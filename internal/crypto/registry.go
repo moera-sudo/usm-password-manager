@@ -15,7 +15,7 @@ type KDFID uint8
 
 const (
 	// * Reference implementations backed by x/crypto occupy 0x01..0x7f
-	refIDMax = 0x7f
+	//TODO refIDMax = 0x7f
 	// * Own implementations written in M10 occupy 0x81..0xff
 	ownIDMin = 0x81
 )

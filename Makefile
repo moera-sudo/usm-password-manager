@@ -11,6 +11,9 @@ DATE ?= $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
 
 LDFLAGS := -X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.buildDate=$(DATE)
 
+GOLANGCI_VERSION ?= v2.13.2
+GOLANGCI := $(BIN_DIR)/golangci-lint
+
 .DEFAULT_GOAL := help
 
 .PHONY: help build build-client build-server run fmt fmt-check tidy vet test test-vectors cover clean
@@ -31,7 +34,12 @@ help:
 	@echo "  test-vectors - Run only RFC test-vector checks"
 	@echo "  cover        - Produce coverage.out and print a summary"
 	@echo "  clean        - Remove build artifacts"
+	@echo "  tools        - Install golangci-lint into ./$(BIN_DIR)"
+	@echo "  lint         - Run golangci-lint"
+	@echo "  lint-fix     - Run golangci-lint with autofixes"
+	@echo "  ci           - Everything CI runs: fmt-check, vet, lint, test"
 
+	
 build: build-client build-server
 
 build-client:
@@ -74,3 +82,16 @@ cover:
 
 clean:
 	rm -rf $(BIN_DIR) coverage.out coverage.html
+
+tools:
+	@mkdir -p $(BIN_DIR)
+	GOBIN=$(CURDIR)/$(BIN_DIR) $(GO) install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_VERSION)
+	@$(GOLANGCI) version
+
+lint:
+	$(GOLANGCI) run ./...
+
+lint-fix:
+	$(GOLANGCI) run --fix ./...
+
+ci: fmt-check vet lint test

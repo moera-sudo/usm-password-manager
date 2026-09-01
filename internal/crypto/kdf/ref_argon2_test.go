@@ -74,12 +74,13 @@ func TestDeriveRejectsBadParams(t *testing.T) {
 		salt []byte
 		p    crypto.Params
 	}{
-		"zero time":       {out, salt, crypto.Params{MemoryKiB: 64, Time: 0, Threads: 1}},
-		"zero threads":    {out, salt, crypto.Params{MemoryKiB: 64, Time: 1, Threads: 0}},
-		"memory too low":  {out, salt, crypto.Params{MemoryKiB: 4, Time: 1, Threads: 4}},
-		"memory too high": {out, salt, crypto.Params{MemoryKiB: crypto.MaxMemoryKiB + 1, Time: 1, Threads: 1}},
-		"short salt":      {out, salt[:crypto.MinSaltSize-1], good},
-		"empty output":    {nil, salt, good},
+		"zero time":        {out, salt, crypto.Params{MemoryKiB: 64, Time: 0, Threads: 1}},
+		"zero threads":     {out, salt, crypto.Params{MemoryKiB: 64, Time: 1, Threads: 0}},
+		"memory too low":   {out, salt, crypto.Params{MemoryKiB: 4, Time: 1, Threads: 4}},
+		"memory too high":  {out, salt, crypto.Params{MemoryKiB: crypto.MaxMemoryKiB + 1, Time: 1, Threads: 1}},
+		"short salt":       {out, salt[:crypto.MinSaltSize-1], good},
+		"empty output":     {nil, salt, good},
+		"output too large": {make([]byte, crypto.MaxDerivedKeyLen+1), salt, good},
 	}
 
 	for name, tc := range tests {

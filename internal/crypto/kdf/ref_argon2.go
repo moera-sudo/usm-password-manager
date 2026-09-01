@@ -28,10 +28,16 @@ func (RefArgon2id) Derive(out, password, salt []byte, p crypto.Params) error {
 	if len(out) == 0 {
 		return fmt.Errorf("%w: output buffer is empty", crypto.ErrParams)
 	}
+	if len(out) > crypto.MaxDerivedKeyLen {
+		return fmt.Errorf("%w: output of %d bytes exceeds the %d byte limit", crypto.ErrParams, len(out), crypto.MaxDerivedKeyLen)
+	}
+
 	if len(salt) < crypto.MinSaltSize {
 		return fmt.Errorf("%w: salt must be at least %d bytes", crypto.ErrParams, crypto.MinSaltSize)
 	}
 
+	// SAFETY len(out) is bounded by MaxDerivedKeyLen above, the conversion cannot overflow
+	//nolint:gosec // G115: the length is checked against MaxDerivedKeyLen above
 	key := argon2.IDKey(password, salt, p.Time, p.MemoryKiB, p.Threads, uint32(len(out)))
 	copy(out, key)
 	crypto.Wipe(key)

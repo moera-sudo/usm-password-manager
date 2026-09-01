@@ -9,6 +9,9 @@ const (
 	// ! Upper bound so a hostile header cannot request terabytes of memory
 	MaxMemoryKiB = 4 * 1024 * 1024
 
+	// ! Upper bound on a derived key, keeps the length conversion probably safe
+	MaxDerivedKeyLen = 1024
+
 	// * Lowest salt length the Argon2 spec allows
 	MinSaltSize = 8
 )
